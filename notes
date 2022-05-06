@@ -52,3 +52,11 @@ low_risk[['Undergraduate Major', 'Spread']].head()
 # sorting the table by the highest mid-career 90th percentile salary, and showing the top 5
 clean_df.sort_values('Mid-Career 90th Percentile Salary', ascending=False).head()
 
+# create a column with the difference between the 90th %ile and 10th %ile salaries, insert the new column into the df
+# then print the table, only showing the majors and spread #s, sort it from highest -> lowest, and only show the top 5
+med_diff = clean_df['Mid-Career 90th Percentile Salary'] - clean_df['Mid-Career 10th Percentile Salary']
+clean_df.insert(1, 'Spread', med_diff)
+print(clean_df[['Undergraduate Major', 'Spread']].sort_values('Spread', ascending=False).head())
+
+# to create an excel-like pivot table, I can use .groupby(). The below would group the values by "Group", and display the averages
+clean_df.groupby('Group').mean()
