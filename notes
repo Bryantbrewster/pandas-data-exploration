@@ -1,0 +1,54 @@
+# importing pandas
+import pandas as pd
+
+# reading a csv into pandas (automatically becomes a dataframe)
+df = pd.read_csv('salaries_by_college_major.csv')
+
+# looking at the first 5 rows of the df
+df.head()
+
+# looking at the last 5 rows of the df
+df.tail()
+
+# seeing how many rows & columns the df has
+df.shape
+
+# accessing the column names
+df.columns
+
+# seeing the whole df and if any cells are NaN (blank or contain strings instead of numbers)
+df.isna()
+
+# deleting the rows with any missing values
+clean_df = df.dropna()
+
+# getting a particular column of values
+clean_df['Starting Median Salary']
+
+# finding the highest value in a certain column (will return the raw value)
+clean_df['Starting Median Salary'].max()
+
+# finding the row number (index) of the row with the highest value in the column
+clean_df['Starting Median Salary'].idxmax()
+
+# getting the name of the major that corresponds to that particular row
+clean_df['Undergraduate Major'].loc[43] or clean_df['Undergraduate Major'][43]
+
+# you can also not specify a particular column, but retrieve the entire row
+clean_df.loc[43]
+
+# subtracting one column's values from another (this will output as a separate df column)
+clean_df['Mid-Career 90th Percentile Salary'] - clean_df['Mid-Career 10th Percentile Salary']
+
+# this gives the newly formed column a name, and then adds it to the main df (first argument (1) is what positions to place the column in the df, 2nd argument is what to name the column, 3rd is what column to place)
+spread_col = clean_df['Mid-Career 90th Percentile Salary'] - clean_df['Mid-Career 10th Percentile Salary']
+clean_df.insert(1, 'Spread', spread_col)
+
+# this sorts the df (default is ascending order) by the column "Spread"s values
+low_risk = clean_df.sort_values('Spread')
+# this select only the undergraduate major and spread columns of the newly sorted dataframe (must use 2 brackets if selecting multiple columns)
+low_risk[['Undergraduate Major', 'Spread']].head()
+
+# sorting the table by the highest mid-career 90th percentile salary, and showing the top 5
+clean_df.sort_values('Mid-Career 90th Percentile Salary', ascending=False).head()
+
